@@ -1,14 +1,116 @@
 <?xml version="1.0" encoding="utf-8"?>
-<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".ui.HomeFragment">
+    android:padding="16dp"
+    android:gravity="center"
+    android:orientation="vertical"
+    tools:context=".MainActivity">
 
+<!--    <EditText-->
+<!--        android:id="@+id/edit_text_input"-->
+<!--        android:layout_width="match_parent"-->
+<!--        android:layout_height="wrap_content"-->
+<!--        android:hint="Input"-->
+<!--        />-->
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        android:gravity="center"
+        android:layout_marginTop="10dp"
+        >
+        <Button
+            android:id="@+id/btn_start_service"
+            android:enabled="false"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginHorizontal="10dp"
+            android:text="Start Service"
+            />
+
+        <Button
+            android:id="@+id/btn_stop_service"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginHorizontal="10dp"
+            android:text="Stop Service" />
+    </LinearLayout>
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_gravity="start"
+        android:layout_marginVertical="5dp"
+        android:layout_marginLeft="30dp"
+        android:text="pitch"
+        android:textSize="18sp" />
+
+    <SeekBar
+        android:id="@+id/seek_bar_pitch"
+        android:layout_width="300dp"
+        android:layout_height="wrap_content"
+        android:progress="50"
+        android:layout_marginLeft="30dp"
+        android:layout_gravity="start"
+        />
 
     <TextView
-        android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:text="Home Fragment" />
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginVertical="5dp"
+        android:textSize="18sp"
+        android:layout_marginLeft="30dp"
+        android:text="speed"
+        android:layout_gravity="start"
+        />
 
-</FrameLayout>
+    <SeekBar
+        android:id="@+id/seek_bar_speed"
+        android:layout_width="300dp"
+        android:layout_height="wrap_content"
+        android:layout_gravity="start"
+        android:layout_marginLeft="30dp"
+        android:progress="50"
+        />
+
+<!--    <Button-->
+<!--        android:id="@+id/btn_speak"-->
+<!--        android:layout_width="wrap_content"-->
+<!--        android:layout_height="wrap_content"-->
+<!--        android:layout_marginTop="10dp"-->
+<!--        android:text="Speak !!"-->
+<!--        android:enabled="false"-->
+<!--        />-->
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        android:gravity="center"
+        android:layout_marginTop="10dp"
+        >
+
+        <Button
+            android:id="@+id/btn_mute_service"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Mute"
+            android:layout_marginHorizontal="16dp"
+            />
+
+        <Button
+            android:enabled="false"
+            android:id="@+id/btn_unmute_service"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginHorizontal="16dp"
+            android:text="Unmute"
+            />
+
+    </LinearLayout>
+
+
+</LinearLayout>
