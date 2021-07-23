@@ -36,8 +36,40 @@ class HomeFragment : Fragment() {
             btnSelectLanguage.setOnClickListener {
                 showChangeLang()
             }
+            btnStopService.setOnClickListener { stopListenerService() }
+            if(NotificationListenerService.isServiceRunning){
+                Log.d(TAG, "Service running")
+                btnStopService.isEnabled = true
+                btnStartService.isEnabled = false
+            }else{
+                Log.d(TAG, "Service not running")
+                btnStopService.isEnabled = false
+                btnStartService.isEnabled = true
+                btnMuteService.isEnabled = false
+                btnUnmuteService.isEnabled = false
+            }
+            btnMuteService.setOnClickListener {
+                muteService()
+            }
+            btnUnmuteService.setOnClickListener {
+                unMuteService()
+            }
         }
     }
+
+    private fun unMuteService() {
+        sendCommandToService(Constants.ACTION_UNMUTE_SERVICE)
+        binding.btnMuteService.isEnabled = true
+        binding.btnUnmuteService.isEnabled = false
+    }
+
+    private fun muteService() {
+        sendCommandToService(Constants.ACTION_MUTE_SERVICE)
+        binding.btnMuteService.isEnabled = false
+        binding.btnUnmuteService.isEnabled = true
+    }
+
+
     private fun showChangeLang() {
         val listItems = arrayOf("English", "हिन्दी", "मराठी")
         val mBuilder = AlertDialog.Builder(requireContext())
@@ -85,9 +117,26 @@ class HomeFragment : Fragment() {
         val serviceIntent = Intent(requireContext(), NotificationListenerService::class.java)
         serviceIntent.setAction(Constants.ACTION_START_OR_RESUME_SERVICE)
         activity?.startService(serviceIntent)
+        binding.btnStartService.isEnabled = false
+        binding.btnStopService.isEnabled = true
+        binding.btnMuteService.isEnabled = true
     }
 
-    private fun stopService(){
+    private fun stopListenerService() {
+        Log.d(TAG, "stopping service")
+        val serviceIntent = Intent(requireContext(), NotificationListenerService::class.java)
+        serviceIntent.setAction(Constants.ACTION_STOP_SERVICE)
+        activity?.startService(serviceIntent)
+        binding.btnStartService.isEnabled = true
+        binding.btnStopService.isEnabled = false
+        binding.btnMuteService.isEnabled = false
+        binding.btnUnmuteService.isEnabled = false
+    }
 
+    private fun sendCommandToService(action:String){
+        val serviceIntent:Intent = Intent(requireContext(), NotificationListenerService::class.java).also {
+            it.action = action
+            activity?.startService(it)
+        }
     }
 }

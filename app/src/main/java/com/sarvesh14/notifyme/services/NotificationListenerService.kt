@@ -36,6 +36,7 @@ class NotificationListenerService
     companion object{
         var blackListedPackages: MutableLiveData<ArrayList<String>> = MutableLiveData<ArrayList<String>>()
         var isNotificationMuted:Boolean = false
+        var isServiceRunning:Boolean = false
         // For translator models
         private const val NUM_TRANSLATORS = 2
         var sourceLang = Language("en")
@@ -98,12 +99,17 @@ class NotificationListenerService
             when(it.action){
                 ACTION_START_OR_RESUME_SERVICE -> {
                     Log.d(TAG, "start or resume service ")
+                    isServiceRunning = true
                 }
                 ACTION_PAUSE_SERVICE -> {
                     Log.d(TAG, "pause service ")
+                    isServiceRunning = false
                 }
                 ACTION_STOP_SERVICE -> {
                     Log.d(TAG, "stop service ")
+                    isServiceRunning = false
+                    stopForeground(true)
+                    stopSelf()
                 }
                 ACTION_MUTE_SERVICE -> {
                     Log.d(TAG, "mute service ")
@@ -302,5 +308,12 @@ class NotificationListenerService
         },
         PendingIntent.FLAG_UPDATE_CURRENT
     )
+
+    override fun onDestroy() {
+        super.onDestroy()
+        mTTS.stop()
+        mTTS.shutdown()
+        translators.evictAll()
+    }
 
 }

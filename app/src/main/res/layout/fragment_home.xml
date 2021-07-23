@@ -14,28 +14,29 @@
         android:orientation="vertical"
         tools:context=".MainActivity">
 
-        <EditText
-            android:id="@+id/edit_text_input"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:text="How are you ?"
-            android:hint="Input"
-            />
+<!--        <EditText-->
+<!--            android:id="@+id/edit_text_input"-->
+<!--            android:layout_width="match_parent"-->
+<!--            android:layout_height="wrap_content"-->
+<!--            android:text="How are you ?"-->
+<!--            android:hint="Input"-->
+<!--            />-->
 
-        <TextView
-            android:id="@+id/text_view_translated_text"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:hint="Translated Text"
-            android:textSize="18sp"
-            android:text="Translated Text"
-            android:layout_marginVertical="2dp"
-            />
+<!--        <TextView-->
+<!--            android:id="@+id/text_view_translated_text"-->
+<!--            android:layout_width="match_parent"-->
+<!--            android:layout_height="wrap_content"-->
+<!--            android:hint="Translated Text"-->
+<!--            android:textSize="18sp"-->
+<!--            android:text="Translated Text"-->
+<!--            android:layout_marginVertical="2dp"-->
+<!--            />-->
         <Button
             android:id="@+id/btn_start_service"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:text="Start Service"
+
             />
 
         <Button
@@ -43,50 +44,51 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:text="Stop Service"
+
             />
 
-        <TextView
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="pitch"
-            android:textSize="16sp"
-            android:layout_marginVertical="5dp"
-            android:layout_gravity="start"
-            />
+<!--        <TextView-->
+<!--            android:layout_width="wrap_content"-->
+<!--            android:layout_height="wrap_content"-->
+<!--            android:text="pitch"-->
+<!--            android:textSize="16sp"-->
+<!--            android:layout_marginVertical="5dp"-->
+<!--            android:layout_gravity="start"-->
+<!--            />-->
 
-        <SeekBar
-            android:id="@+id/seek_bar_pitch"
-            android:layout_width="200dp"
-            android:layout_height="wrap_content"
-            android:progress="50"
-            android:layout_gravity="start"
-            />
+<!--        <SeekBar-->
+<!--            android:id="@+id/seek_bar_pitch"-->
+<!--            android:layout_width="200dp"-->
+<!--            android:layout_height="wrap_content"-->
+<!--            android:progress="50"-->
+<!--            android:layout_gravity="start"-->
+<!--            />-->
 
-        <TextView
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginVertical="5dp"
-            android:textSize="16sp"
-            android:text="speed"
-            android:layout_gravity="start"
-            />
+<!--        <TextView-->
+<!--            android:layout_width="wrap_content"-->
+<!--            android:layout_height="wrap_content"-->
+<!--            android:layout_marginVertical="5dp"-->
+<!--            android:textSize="16sp"-->
+<!--            android:text="speed"-->
+<!--            android:layout_gravity="start"-->
+<!--            />-->
 
-        <SeekBar
-            android:id="@+id/seek_bar_speed"
-            android:layout_width="200dp"
-            android:layout_height="wrap_content"
-            android:layout_gravity="start"
-            android:progress="50"
-            />
+<!--        <SeekBar-->
+<!--            android:id="@+id/seek_bar_speed"-->
+<!--            android:layout_width="200dp"-->
+<!--            android:layout_height="wrap_content"-->
+<!--            android:layout_gravity="start"-->
+<!--            android:progress="50"-->
+<!--            />-->
 
-        <Button
-            android:id="@+id/btn_speak"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginTop="10dp"
-            android:text="Speak !!"
-            android:enabled="false"
-            />
+<!--        <Button-->
+<!--            android:id="@+id/btn_speak"-->
+<!--            android:layout_width="wrap_content"-->
+<!--            android:layout_height="wrap_content"-->
+<!--            android:layout_marginTop="10dp"-->
+<!--            android:text="Speak !!"-->
+<!--            android:enabled="false"-->
+<!--            />-->
 
         <LinearLayout
             android:layout_width="match_parent"
@@ -132,14 +134,7 @@
             android:text="Change Language"
             />
 
-        <Button
-            android:id="@+id/btn_translate_text"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="Translate"
-            android:layout_marginTop="10dp"
-            android:enabled="false"
-            />
+
     </LinearLayout>
 
 </FrameLayout>
