@@ -1,5 +1,6 @@
 package com.sarvesh14.notifyme
 
+import android.content.Intent
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.util.Log
@@ -7,6 +8,7 @@ import androidx.navigation.NavController
 import androidx.navigation.fragment.NavHostFragment
 import com.google.android.gms.common.ConnectionResult
 import com.google.android.gms.common.GoogleApiAvailability
+import com.sarvesh14.notifyme.services.NotificationListenerService
 
 private const val TAG = "MainActivity"
 class MainActivity : AppCompatActivity(R.layout.activity_main) {
@@ -18,6 +20,12 @@ class MainActivity : AppCompatActivity(R.layout.activity_main) {
 
         val navHostFragment = supportFragmentManager.findFragmentById(R.id.nav_host_fragment) as NavHostFragment
         navController = navHostFragment.navController
+//        startNotificationListener()
+    }
+
+    private fun startNotificationListener() {
+//        val intent:Intent = Intent("com.sarvesh14.notifyme.ACTION_NOTIFICATION_RECEIVED")
+        startService(Intent(this, NotificationListenerService::class.java))
     }
 
     override fun onSupportNavigateUp(): Boolean {
