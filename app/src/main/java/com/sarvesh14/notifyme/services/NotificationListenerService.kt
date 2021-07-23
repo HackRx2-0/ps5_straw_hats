@@ -7,10 +7,15 @@ import android.app.Service
 import android.content.Context
 import android.content.Intent
 import android.os.IBinder
+import android.service.notification.StatusBarNotification
 import android.speech.tts.TextToSpeech
 import android.util.Log
+import android.util.LruCache
 import androidx.core.app.NotificationCompat
 import androidx.lifecycle.MutableLiveData
+import com.google.android.gms.tasks.Tasks
+import com.google.mlkit.common.model.RemoteModelManager
+import com.google.mlkit.nl.translate.*
 import com.sarvesh14.notifyme.Constants
 import com.sarvesh14.notifyme.Constants.ACTION_CHANGE_LANGUAGE
 import com.sarvesh14.notifyme.Constants.ACTION_MUTE_SERVICE
@@ -44,6 +49,30 @@ class NotificationListenerService
     override fun onBind(intent: Intent?): IBinder? {
         return null
     }
+    private val modelManager: RemoteModelManager = RemoteModelManager.getInstance()
+    private val translators =
+        object : LruCache<TranslatorOptions, Translator>(NUM_TRANSLATORS){
+            override fun create(options: TranslatorOptions?): Translator {
+                return Translation.getClient(options)
+            }
+
+            override fun entryRemoved(
+                evicted: Boolean,
+                key: TranslatorOptions?,
+                oldValue: Translator,
+                newValue: Translator?
+            ) {
+//                    super.entryRemoved(evicted, key, oldValue, newValue)
+                oldValue.close()
+            }
+        }
+
+
+    val availableLanguages:List<Language> = TranslateLanguage.getAllLanguages().map {
+        Language(it)
+    }
+
+
 
     override fun onCreate() {
         super.onCreate()
@@ -97,6 +126,7 @@ class NotificationListenerService
                 ACTION_PLAY_NOTIFICATION -> {
                     Log.d(TAG, "onStartCommand: play notification")
                     playNotification(it)
+
                 }
                 else -> {
                     Log.d(TAG, "unknown intent: ")
@@ -109,7 +139,9 @@ class NotificationListenerService
     private fun playNotification(intent: Intent){
         val text = intent.getStringExtra("textData")
 //        Log.d(TAG, "playNotification: speakign text:" + text)
-        speak(text!!)
+//        speak(text!!)
+        translateIfNeededAndSpeak(text!!)
+
     }
 
     private fun speak(text: String) {
@@ -188,7 +220,80 @@ class NotificationListenerService
             //
         }
     }
+    private fun translateIfNeededAndSpeak(text: String) {
+//        val packageName:String = statusBarNotification.packageName
 
+        if(sourceLang.code != targetLang.code){
+            translate2(text)
+        }else{
+            speak(text)
+        }
+//        packageName.let { currentPackageName ->
+//            text = StringBuilder().apply {
+//                append("Notification from ")
+//                append(currentPackageName)
+//            }.toString()
+//            Log.d(TAG, "translateIfNeededAndSpeak: sourceLang:" + sourceLang.code + " targetLang:" + targetLang.code)
+//            if(sourceLang.code != targetLang.code){
+////                 translate(text).addOnCompleteListener{ task ->
+////                    if(task.isSuccessful){
+////                       text = task.result
+////                    }else{
+////                       text = "Unable to translate"
+////                    }
+////                }
+//                translate2(text)
+////                translate3(text)
+//                return
+//            }
+//            speak(text)
+////            speak(packageName)
+//
+//        }
+    }
+
+
+    fun translate2(text:String) {
+
+//        val text = sourceText.value
+//        val source = sourceLang
+//        val target = targetLang
+        if(text.isEmpty()){
+            return
+        }
+        Log.d(TAG, "translate2: text"+ text)
+        val sourceLangCode = TranslateLanguage.fromLanguageTag(sourceLang.code)!!
+        val targetLangCode = TranslateLanguage.fromLanguageTag(targetLang.code)!!
+        Log.d(TAG, "translate2: sourceLangCode:" + sourceLangCode + " targetLangCode:" + targetLangCode)
+        val options = TranslatorOptions.Builder()
+            .setSourceLanguage(sourceLangCode)
+            .setTargetLanguage(targetLangCode)
+            .build()
+        Log.d(TAG, "translate2: ###")
+        var sol:String = ""
+        translators[options].downloadModelIfNeeded().continueWithTask { task ->
+            if(task.isSuccessful){
+                translators[options].translate(text).addOnSuccessListener { translatedString ->
+                    Log.d(TAG, "translate2: translatedString" + translatedString)
+                    speak(translatedString)
+                    fetchDownloadedModels()
+                }
+            }else{
+                sol = "Unable to translate"
+                Log.d(TAG, "translate2: Unable to translate")
+                Tasks.forException<String>(
+                    task.exception ?: Exception("Error occurred while translation")
+                )
+            }
+        }
+        Log.d(TAG, "translate2: ****")
+    }
+    private fun fetchDownloadedModels() {
+        modelManager.getDownloadedModels(TranslateRemoteModel::class.java)
+            .addOnSuccessListener { remoteModels ->
+                remoteModels.sortedBy { it.language }.map { it.language }
+            }
+    }
     private fun getMainActivityPendingIntent() = PendingIntent.getActivity(
         this,
         0,
